@@ -13,15 +13,15 @@ const zend_function_entry test_functions[] = {
 };
 
 zend_module_entry test_module_entry = {
-	STANDARD_MODULE_HEADER,       // #if ZEND_MODULE_API_NO >= 20010901
-	"system_available_memory",                       // название модуля
-	test_functions,               // указываем экспортируемые функции
-	NULL,                         // PHP_MINIT(test), Module Initialization
-	NULL,                         // PHP_MSHUTDOWN(test), Module Shutdown
-	NULL,                         // PHP_RINIT(test), Request Initialization
-	NULL,                         // PHP_RSHUTDOWN(test), Request Shutdown
-	NULL,                         // PHP_MINFO(test), Module Info (для phpinfo())
-	"0.1",                        // версия нашего модуля
+	STANDARD_MODULE_HEADER,       
+	"system_available_memory",    
+	test_functions,               
+	NULL,                         
+	NULL,                         
+	NULL,                         
+	NULL,                         
+	NULL,                         
+	"0.1",                      
 	STANDARD_MODULE_PROPERTIES
 };
 
@@ -40,20 +40,11 @@ PHP_FUNCTION(system_available_memory)
     rc = sysctlbyname("vm.vmtotal", &vmt, &vmt_size, NULL, 0);
     if (rc < 0){
 	RETURN_FALSE;
-       //perror("sysctlbyname");
-      // return 1;
     }
 
     rc = sysctlbyname("vm.stats.vm.v_page_size", &page_size, &uint_size, NULL, 0);
     if (rc < 0){
 	RETURN_FALSE; 
-      // perror("sysctlbyname");
-       //return 1;
     }
 	RETURN_LONG(vmt.t_free * (u_int64_t)page_size);
-    //printf("Free memory       : %ld\n", vmt.t_free * (u_int64_t)page_size);
-    //printf("Available memory  : %ld\n", vmt.t_avm * (u_int64_t)page_size);
-
-    
-    //RETURN_STRING("hello habr", 1); 
 }
